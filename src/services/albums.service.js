@@ -1,13 +1,17 @@
 import http from "../http-common";
 
-class TutorialDataService {
+class AlbumsDataService {
   getAll() {
     return http.get("/albums");
   }
 
   get(id) {
-    return http.get(`/albums/${id}`);
+  return http.get(`/albums/${id}`);
   }
+
+  // get(id) {
+  //  return http.get(`/albums/${id}/photos`);
+  // }
 
   create(data) {
     return http.post("/albums", data);
@@ -30,4 +34,4 @@ class TutorialDataService {
   }
 }
 
-export default new TutorialDataService();
+export default new AlbumsDataService();

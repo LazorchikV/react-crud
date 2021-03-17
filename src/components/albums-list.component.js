@@ -1,27 +1,27 @@
 import React, { Component } from "react";
-import TutorialDataService from "../services/tutorial.service";
+import AlbumsDataService from "../services/albums.service";
 import { Link } from "react-router-dom";
 
-export default class TutorialsList extends Component {
+export default class AlbumsList extends Component {
   constructor(props) {
     super(props);
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
-    this.retrieveTutorials = this.retrieveTutorials.bind(this);
+    this.retrieveAlbums = this.retrieveAlbums.bind(this);
     this.refreshList = this.refreshList.bind(this);
-    this.setActiveTutorial = this.setActiveTutorial.bind(this);
-    this.removeAllTutorials = this.removeAllTutorials.bind(this);
+    this.setActiveAlbum = this.setActiveAlbum.bind(this);
+    this.removeAllAlbums = this.removeAllAlbums.bind(this);
     this.searchTitle = this.searchTitle.bind(this);
 
     this.state = {
-      tutorials: [],
-      currentTutorial: null,
+      Albums: [],
+      currentAlbum: null,
       currentIndex: -1,
       searchTitle: ""
     };
   }
 
   componentDidMount() {
-    this.retrieveTutorials();
+    this.retrieveAlbums();
   }
 
   onChangeSearchTitle(e) {
@@ -32,11 +32,11 @@ export default class TutorialsList extends Component {
     });
   }
 
-  retrieveTutorials() {
-    TutorialDataService.getAll()
+  retrieveAlbums() {
+    AlbumsDataService.getAll()
       .then(response => {
         this.setState({
-          tutorials: response.data
+          Albums: response.data
         });
         console.log(response.data);
       })
@@ -46,22 +46,22 @@ export default class TutorialsList extends Component {
   }
 
   refreshList() {
-    this.retrieveTutorials();
+    this.retrieveAlbums();
     this.setState({
-      currentTutorial: null,
+      currentAlbum: null,
       currentIndex: -1
     });
   }
 
-  setActiveTutorial(tutorial, index) {
+  setActiveAlbum(Album, index) {
     this.setState({
-      currentTutorial: tutorial,
+      currentAlbum: Album,
       currentIndex: index
     });
   }
 
-  removeAllTutorials() {
-    TutorialDataService.deleteAll()
+  removeAllAlbums() {
+    AlbumsDataService.deleteAll()
       .then(response => {
         console.log(response.data);
         this.refreshList();
@@ -72,10 +72,10 @@ export default class TutorialsList extends Component {
   }
 
   searchTitle() {
-    TutorialDataService.findByTitle(this.state.searchTitle)
+    AlbumsDataService.findByTitle(this.state.searchTitle)
       .then(response => {
         this.setState({
-          tutorials: response.data
+          Albums: response.data
         });
         console.log(response.data);
       })
@@ -85,7 +85,7 @@ export default class TutorialsList extends Component {
   }
 
   render() {
-    const { searchTitle, tutorials, currentTutorial, currentIndex } = this.state;
+    const { searchTitle, Albums, currentAlbum, currentIndex } = this.state;
 
     return (
       <div className="list row">
@@ -110,56 +110,55 @@ export default class TutorialsList extends Component {
           </div>
         </div>
         <div className="col-md-6">
-          <h4>Albums List</h4>
-
+          <h4>List of albums</h4>
           <ul className="list-group">
-            {tutorials &&
-              tutorials.map((tutorial, index) => (
+            {Albums &&
+              Albums.map((Album, index) => (
                 <li
                   className={
                     "list-group-item " +
                     (index === currentIndex ? "active" : "")
                   }
-                  onClick={() => this.setActiveTutorial(tutorial, index)}
+                  onClick={() => this.setActiveAlbum(Album, index)}
                   key={index}
                 >
-                  {tutorial.title}
+                  {Album.title}
                 </li>
               ))}
           </ul>
 
           <button
             className="m-3 btn btn-sm btn-danger"
-            onClick={this.removeAllTutorials}
+            onClick={this.removeAllAlbums}
           >
             Remove All
           </button>
         </div>
         <div className="col-md-6">
-          {currentTutorial ? (
+          {currentAlbum ? (
             <div>
-              <h4>Tutorial</h4>
+              <h4>List</h4>
               <div>
                 <label>
                   <strong>Title:</strong>
                 </label>{" "}
-                {currentTutorial.title}
+                {currentAlbum.title}
               </div>
               <div>
                 <label>
                   <strong>Description:</strong>
                 </label>{" "}
-                {currentTutorial.description}
+                {currentAlbum.description}
               </div>
               <div>
                 <label>
                   <strong>Status:</strong>
                 </label>{" "}
-                {currentTutorial.published ? "Published" : "Pending"}
+                {currentAlbum.published ? "Published" : "Pending"}
               </div>
 
               <Link
-                to={"/tutorials/" + currentTutorial.id}
+                to={"/Album/" + currentAlbum.id}
                 className="badge badge-warning"
               >
                 Edit
@@ -168,7 +167,7 @@ export default class TutorialsList extends Component {
           ) : (
             <div>
               <br />
-              <p>Please click on a Tutorial...</p>
+              <p>Please click on a List of albums...</p>
             </div>
           )}
         </div>

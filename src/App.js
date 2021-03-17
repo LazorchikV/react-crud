@@ -1,22 +1,24 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Link, Switch } from 'react-router-dom';
-import TutorialsList from './components/tutorials-list.component';
-import AddTutorial from './components/add-tutorial.component';
-import Tutorial from './components/tutorial.component';
+import AlbumsList from './components/albums-list.component';
+import AddAlbum from './components/add-album.component';
+import Album from './components/album.component';
+import PhotosAlbumList from './components/photos-albums.component';
+
 
 class App extends Component {
   render() {
     return (
       <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <a href="/tutorials" className="navbar-brand">
-            Home
+          <a href="/albums" className="navbar-brand">
+            Albums
           </a>
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
-              <Link to={"/tutorials"} className="nav-link">
-                Albums
+              <Link to={"/albums/:id/photos"} className="nav-link">
+                Photos Albums
               </Link>
             </li>
             <li className="nav-item">
@@ -29,9 +31,10 @@ class App extends Component {
 
         <div className="container mt-3">
           <Switch>
-            <Route exact path={["/", "/tutorials"]} component={TutorialsList} />
-            <Route exact path="/add" component={AddTutorial} />
-            <Route path="/tutorials/:id" component={Tutorial} />
+            <Route exact path={["/", "/albums"]} component={AlbumsList} />
+            <Route exact path="/add" component={AddAlbum} />
+            <Route exact path="/album/:id" component={Album} />
+            <Route exact path="/albums/:id/photos" component={PhotosAlbumList} />
           </Switch>
         </div>
       </div>
